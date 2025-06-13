@@ -1,2 +1,13 @@
 echo "__pycache__/" >> .gitignore
 echo ".DS_Store" >> .gitignore
+
+# Entornos virtuales
+.venv/
+__pycache__/
+*.pyc
+
+# Archivos del sistema
+.DS_Store
+
+# Logs (opcional, si no quieres subirlos)
+logs/

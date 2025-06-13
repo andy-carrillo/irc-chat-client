@@ -1,0 +1,1 @@
+# Lógica de comandos (/j, /n, /nick, etc.)
