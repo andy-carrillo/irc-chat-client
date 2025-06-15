@@ -1,91 +1,78 @@
-# 🌐 IRC Chat Web Client (WebSocket Edition)
+# 💬 IRC Chat Client (WebSocket + HTML)
 
-Este proyecto es un cliente IRC moderno basado en WebSockets y HTML, inspirado en el estilo clásico de XChat. Permite conectarse a canales IRC, enviar mensajes, cambiar de canal, actualizar el nick y ver los usuarios conectados, todo desde el navegador.
+Un cliente IRC ligero escrito en Python y HTML, inspirado en XChat y diseñado para conectarse a servidores como `irc.irc-hispano.org`.
 
----
-
-## 🚀 Tecnologías usadas
-
-- **Python 3.12+**
-- **WebSockets (servidor backend con `websockets`)**
-- **HTML + JS (cliente frontend)**
-- **IRC Raw Protocol**
-- Sin frameworks pesados — solo tecnologías básicas y eficientes.
-
----
-
-## 📁 Estructura del proyecto
+## 📁 Estructura del Proyecto
 
 ```
 irc-chat-client/
 ├── backend/
-│   ├── irc_bridge.py           # Lógica de conexión IRC
-│   ├── websocket_server.py     # Servidor WebSocket que enlaza navegador y IRC
-│   └── logs/                   # Logs separados: privados y sistema
+│   ├── irc_bridge.py
+│   ├── websocket_server.py
+│   └── logs/
+│       ├── sistema/
+│       └── privados/
 ├── frontend/
-│   └── ws-test.html            # Interfaz web moderna
-├── .gitignore
-└── README.md
+│   └── ws-test.html
+├── requirements.txt
+└── .gitignore
 ```
 
----
+## 🚀 Requisitos
 
-## ✅ Funcionalidades
+- Python 3.10 o superior
+- `websockets` (ya incluido en `requirements.txt`)
 
-- ✅ Conexión automática a `irc.irc-hispano.org`
-- ✅ Cambio de canal con `/join #canal`
-- ✅ Cambio de nick con `/nick NuevoNick`
-- ✅ Mensajes privados con `/query nick`
-- ✅ Salida con `/quit` o `/q`
-- ✅ Visualización en tiempo real de:
-  - Mensajes
-  - Usuarios conectados (nicks)
-  - Canales
-- ✅ Soporte para logs locales
+## 🛠️ Instalación
 
----
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/andy-carrillo/irc-chat-client.git
+   cd irc-chat-client
+   ```
 
-## 📦 Instalación
+2. Crea un entorno virtual:
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate   # En Windows: .venv\Scripts\activate
+   ```
 
-```bash
-git clone https://github.com/andy-carrillo/irc-chat-client.git
-cd irc-chat-client/backend
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python websocket_server.py
-```
+3. Instala las dependencias:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Luego, abre `frontend/ws-test.html` en tu navegador.
+## ▶️ Ejecución
 
----
+1. Ejecuta el servidor WebSocket en `backend/`:
+   ```bash
+   python backend/websocket_server.py
+   ```
 
-## 📝 Notas
+2. Abre el cliente HTML en tu navegador:
+   ```bash
+   open frontend/ws-test.html   # En Mac
+   start frontend/ws-test.html  # En Windows
+   ```
 
-- Se conecta por defecto a `irc.irc-hispano.org` en el canal `#prueba_c` con el nick `Hipopotamo_c`.
-- El código está optimizado para **uso educativo** y personal.
-- Puedes modificar los valores por defecto desde `websocket_server.py`.
+## 💡 Características
 
----
+- Conexión en tiempo real a canales IRC
+- Soporte para comandos `/join`, `/nick`, `/query`, `/quit`
+- Visualización de nicks conectados al canal
+- Interfaz web con soporte para scroll, Enter, y auto-scroll
 
-## 📂 .gitignore sugerido
+## 📦 Dependencias
 
-```
-.venv/
-__pycache__/
-logs/
-```
+- websockets
 
----
+## 📁 Exclusiones (ver .gitignore)
 
-## ✨ Captura
+- `.venv/`
+- `__pycache__/`
+- `logs/`
+- `.DS_Store`
 
-![Vista del cliente en navegador](docs/screenshot.png)
+## 🧠 Inspirado en
 
----
-
-## 👨‍💻 Autor
-
-Desarrollado por **Andres Carrillo** ([@andy-carrillo](https://github.com/andy-carrillo)) — Junio 2025.
-
----
+XChat, HexChat y herramientas clásicas de IRC.
