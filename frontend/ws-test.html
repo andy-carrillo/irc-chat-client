@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>IRC WebSocket Client</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: monospace;
+      background-color: #1e1e1e;
+      color: #eee;
+      display: flex;
+      height: 100vh;
+    }
+    .sidebar-left, .sidebar-right {
+      width: 15%;
+      background: #2c2c2c;
+      border-left: 1px solid #444;
+      border-right: 1px solid #444;
+      padding: 0.5em;
+      box-sizing: border-box;
+    }
+    .sidebar-left h3, .sidebar-right h3 {
+      margin-top: 0;
+      font-size: 1em;
+    }
+    .main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    #chat {
+      flex-grow: 1;
+      padding: 0.5em;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      background-color: #1e1e1e;
+    }
+    .input-container {
+      display: flex;
+      border-top: 1px solid #444;
+      padding: 0.5em;
+    }
+    #input {
+      flex-grow: 1;
+      padding: 0.5em;
+      font-size: 1em;
+      border: none;
+      outline: none;
+      background: #2c2c2c;
+      color: #fff;
+    }
+    button {
+      padding: 0.5em 1em;
+      background-color: #444;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-left: 0.5em;
+    }
+    ul {
+      list-style: none;
+      padding-left: 1em;
+    }
+    li {
+      margin-bottom: 0.3em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar-left">
+    <h3>📂 Canales</h3>
+    <ul id="canales">
+      <li>#prueba_c</li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <div id="chat">Conectando...</div>
+    <div class="input-container">
+      <input id="input" type="text" placeholder="Escribe un mensaje... (Enter para enviar)">
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
+  </div>
+
+  <div class="sidebar-right">
+    <h3>👥 Nicks</h3>
+    <ul id="nicks">
+      <!-- Se mostrarán los nicks aquí -->
+    </ul>
+  </div>
+
+<script>
+  const ws = new WebSocket("ws://localhost:8765");
+  const chat = document.getElementById("chat");
+  const input = document.getElementById("input");
+  const nicksList = document.getElementById("nicks");
+
+  ws.onopen = () => {
+    append("✅ Conectado al WebSocket");
+  };
+
+  ws.onmessage = (event) => {
+    const msg = event.data;
+
+    if (msg.startsWith("[NICKS]")) {
+      const nicks = msg.replace("[NICKS]", "").trim().split("|");
+      updateNicks(nicks);
+    } else {
+      append(msg);
+    }
+  };
+
+  function append(message) {
+    const div = document.createElement("div");
+    div.textContent = message;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function updateNicks(nicks) {
+    nicksList.innerHTML = "";
+    nicks.forEach(nick => {
+      const li = document.createElement("li");
+      li.textContent = nick;
+      nicksList.appendChild(li);
+    });
+  }
+
+  function sendMessage() {
+    const msg = input.value.trim();
+    if (msg) {
+      append("🟡 Tú: " + msg);
+      ws.send(msg);
+      input.value = "";
+    }
+  }
+
+  input.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  });
+</script>
+
+</body>
+</html>
